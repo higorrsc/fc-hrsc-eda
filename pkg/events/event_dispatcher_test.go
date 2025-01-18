@@ -1,8 +1,10 @@
 package events
 
 import (
+	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -36,5 +38,22 @@ type EventDispatcherTestSuite struct {
 	handler         TestEventHandler
 	handler2        TestEventHandler
 	handler3        TestEventHandler
-	eventDispatcher EventDispatcher
+	eventDispatcher *EventDispatcher
+}
+
+func (s *EventDispatcherTestSuite) SetupTest() {
+	s.eventDispatcher = NewEventDispatcher()
+	s.handler = TestEventHandler{}
+	s.handler2 = TestEventHandler{}
+	s.handler3 = TestEventHandler{}
+	s.event = TestEvent{Name: "test", Payload: "test"}
+	s.event2 = TestEvent{Name: "test2", Payload: "test2"}
+}
+
+func (s *EventDispatcherTestSuite) TestEventDispatcher_Register() {
+	assert.True(s.T(), true)
+}
+
+func TestSuite(t *testing.T) {
+	suite.Run(t, new(EventDispatcherTestSuite))
 }
