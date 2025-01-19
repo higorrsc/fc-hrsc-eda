@@ -40,9 +40,9 @@ func main() {
 	accountHandler := web.NewWebAccountHandler(*createAccountUseCase)
 	transactionHandler := web.NewWebTransactionHandler(*createTransactionUseCase)
 
-	webserver.AddHandler("/client", clientHandler.CreateClient)
-	webserver.AddHandler("/account", accountHandler.CreateAccount)
-	webserver.AddHandler("/transaction", transactionHandler.CreateTransaction)
+	webserver.AddHandler("/clients", clientHandler.CreateClient)
+	webserver.AddHandler("/accounts", accountHandler.CreateAccount)
+	webserver.AddHandler("/transactions", transactionHandler.CreateTransaction)
 
 	webserver.Start()
 }

@@ -1,0 +1,15 @@
+POST http://localhost:3000/accounts HTTP/1.1
+Content-Type: application/json
+
+{
+  "client_id": "e24f75e8-2c0d-42c1-9c3b-c5e5ab74e566"
+}
+
+###
+
+POST http://localhost:3000/accounts HTTP/1.1
+Content-Type: application/json
+
+{
+  "client_id": "bcce0a46-f7fa-4915-86cd-3e0501f2b7b5"
+}
