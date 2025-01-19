@@ -10,6 +10,8 @@ import (
 	"github.com/higorrsc/fc-hrsc-eda/internal/usecase/create_account"
 	"github.com/higorrsc/fc-hrsc-eda/internal/usecase/create_client"
 	"github.com/higorrsc/fc-hrsc-eda/internal/usecase/create_transaction"
+	"github.com/higorrsc/fc-hrsc-eda/internal/web"
+	"github.com/higorrsc/fc-hrsc-eda/internal/web/webserver"
 	"github.com/higorrsc/fc-hrsc-eda/pkg/events"
 )
 
@@ -31,4 +33,16 @@ func main() {
 	createClientUseCase := create_client.NewCreateClientUseCase(clientDb)
 	createAccountUseCase := create_account.NewCreateAccountUseCase(accountDb, clientDb)
 	createTransactionUseCase := create_transaction.NewCreateTransactionUseCase(transactionDb, accountDb, eventDispatcher, transactionCreatedEvent)
+
+	webserver := webserver.NewWebServer(":3000")
+
+	clientHandler := web.NewWebClientHandler(*createClientUseCase)
+	accountHandler := web.NewWebAccountHandler(*createAccountUseCase)
+	transactionHandler := web.NewWebTransactionHandler(*createTransactionUseCase)
+
+	webserver.AddHandler("/client", clientHandler.CreateClient)
+	webserver.AddHandler("/account", accountHandler.CreateAccount)
+	webserver.AddHandler("/transaction", transactionHandler.CreateTransaction)
+
+	webserver.Start()
 }
