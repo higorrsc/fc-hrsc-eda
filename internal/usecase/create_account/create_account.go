@@ -1,8 +1,8 @@
 package createaccount
 
 import (
-	"github.com/higorrsc/fc-hrsc-microservices/internal/entity"
-	"github.com/higorrsc/fc-hrsc-microservices/internal/gateway"
+	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
+	"github.com/higorrsc/fc-hrsc-eda/internal/gateway"
 )
 
 type CreateAccountInputDTO struct {

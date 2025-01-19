@@ -1,6 +1,6 @@
 package gateway
 
-import "github.com/higorrsc/fc-hrsc-microservices/internal/entity"
+import "github.com/higorrsc/fc-hrsc-eda/internal/entity"
 
 type AccountGateway interface {
 	Save(account *entity.Account) error

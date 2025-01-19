@@ -3,7 +3,7 @@ package createclient
 import (
 	"testing"
 
-	"github.com/higorrsc/fc-hrsc-microservices/internal/entity"
+	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

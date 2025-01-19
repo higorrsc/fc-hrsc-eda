@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/higorrsc/fc-hrsc-microservices/internal/entity"
+	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
 	"github.com/stretchr/testify/suite"
 
 	_ "github.com/mattn/go-sqlite3"

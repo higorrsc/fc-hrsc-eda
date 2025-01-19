@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	"github.com/higorrsc/fc-hrsc-microservices/internal/entity"
+	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
 )
 
 type TransactionDB struct {
