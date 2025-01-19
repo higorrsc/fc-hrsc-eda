@@ -39,7 +39,7 @@ func TestAccountDBTestSuite(t *testing.T) {
 
 func (suite *AccountDBTestSuite) TestSave() {
 	account := entity.NewAccount(suite.client)
-	err := suite.accountDB.Create(account)
+	err := suite.accountDB.Save(account)
 	suite.Nil(err)
 }
 
@@ -52,7 +52,7 @@ func (suite *AccountDBTestSuite) TestFindByID() {
 		suite.client.UpdatedAt)
 
 	account := entity.NewAccount(suite.client)
-	err := suite.accountDB.Create(account)
+	err := suite.accountDB.Save(account)
 	suite.Nil(err)
 
 	accountDB, err := suite.accountDB.FindByID(account.ID)

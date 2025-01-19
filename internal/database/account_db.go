@@ -61,7 +61,7 @@ func (a *AccountDB) FindByID(id string) (*entity.Account, error) {
 	return &account, nil
 }
 
-func (a *AccountDB) Create(account *entity.Account) error {
+func (a *AccountDB) Save(account *entity.Account) error {
 	stmt, err := a.DB.Prepare(`
     INSERT INTO 
       accounts (id, client_id, balance, created_at, updated_at) 
