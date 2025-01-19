@@ -1,4 +1,4 @@
-package createtransaction
+package create_transaction
 
 import (
 	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
