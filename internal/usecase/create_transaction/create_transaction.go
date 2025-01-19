@@ -3,6 +3,7 @@ package createtransaction
 import (
 	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
 	"github.com/higorrsc/fc-hrsc-eda/internal/gateway"
+	"github.com/higorrsc/fc-hrsc-eda/pkg/events"
 )
 
 type CreateTransactionInputDTO struct {
@@ -18,12 +19,21 @@ type CreateTransactionOutputDTO struct {
 type CreateTransactionUseCase struct {
 	transactionGateway gateway.TransactionGateway
 	accountGateway     gateway.AccountGateway
+	eventDispatcher    events.EventDispatcherInterface
+	transactionCreated events.EventInterface
 }
 
-func NewCreateTransactionUseCase(t gateway.TransactionGateway, a gateway.AccountGateway) *CreateTransactionUseCase {
+func NewCreateTransactionUseCase(
+	t gateway.TransactionGateway,
+	a gateway.AccountGateway,
+	ed events.EventDispatcherInterface,
+	tc events.EventInterface,
+) *CreateTransactionUseCase {
 	return &CreateTransactionUseCase{
 		transactionGateway: t,
 		accountGateway:     a,
+		eventDispatcher:    ed,
+		transactionCreated: tc,
 	}
 }
 
@@ -48,7 +58,12 @@ func (c *CreateTransactionUseCase) Execute(input CreateTransactionInputDTO) (*Cr
 		return nil, err
 	}
 
-	return &CreateTransactionOutputDTO{
+	output := &CreateTransactionOutputDTO{
 		ID: transaction.ID,
-	}, nil
+	}
+
+	c.transactionCreated.SetPayload(output)
+	c.eventDispatcher.Dispatch(c.transactionCreated)
+
+	return output, nil
 }

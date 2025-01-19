@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/higorrsc/fc-hrsc-eda/internal/entity"
+	"github.com/higorrsc/fc-hrsc-eda/internal/event"
+	"github.com/higorrsc/fc-hrsc-eda/pkg/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -53,7 +55,10 @@ func TestCreateTransactionUseCase_Execute(t *testing.T) {
 		Amount:        100.00,
 	}
 
-	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount)
+	dispatcher := events.NewEventDispatcher()
+	event := event.NewTransactionCreated()
+
+	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount, dispatcher, event)
 	outputDto, err := uc.Execute(inputDto)
 	assert.Nil(t, err)
 	assert.NotNil(t, outputDto.ID)
