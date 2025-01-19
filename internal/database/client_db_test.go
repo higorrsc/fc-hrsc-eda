@@ -21,7 +21,7 @@ func (suite *ClientDBTestSuite) SetupSuite() {
 	suite.Nil(err)
 	suite.db = db
 	db.Exec("CREATE TABLE clients (id VARCHAR(255) PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), created_at DATETIME, updated_at DATETIME)")
-	suite.clientDB = NewClientDb(db)
+	suite.clientDB = NewClientDB(db)
 }
 
 func (suite *ClientDBTestSuite) TearDownSuite() {

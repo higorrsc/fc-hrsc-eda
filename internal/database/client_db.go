@@ -10,7 +10,7 @@ type ClientDB struct {
 	DB *sql.DB
 }
 
-func NewClientDb(db *sql.DB) *ClientDB {
+func NewClientDB(db *sql.DB) *ClientDB {
 	return &ClientDB{
 		DB: db,
 	}
