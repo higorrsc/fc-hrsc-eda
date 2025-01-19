@@ -4,9 +4,11 @@
     "github",
     "higorrsc",
     "hrsc",
+    "mysql",
     "sqlite",
     "startuml",
     "stretchr",
+    "usecase",
     "uuid",
     "VARCHAR"
   ],
