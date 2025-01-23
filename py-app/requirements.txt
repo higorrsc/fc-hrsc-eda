@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+black
+mypy
+confluent-kafka
+sqlalchemy
+pymysql
