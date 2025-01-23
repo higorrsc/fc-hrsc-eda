@@ -1,0 +1,20 @@
+@account_01 = 77bf4d6a-e7a5-40a5-b131-0b906c2e4d9e
+@account_02 = d33e99a3-27aa-4891-a93d-220204013a55
+@account_03 = a1ca32d6-f939-47bf-8644-09b6949ba750
+@account_04 = 00faaa0e-c2fd-429f-b8b6-eac3d0a9d414
+
+###
+GET http://localhost:3003/balance/{{account_01}} HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:3003/balance/{{account_02}} HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:3003/balance/{{account_03}} HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:3003/balance/{{account_04}} HTTP/1.1
+Accept: application/json
