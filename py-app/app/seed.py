@@ -16,19 +16,33 @@ def create_seed_data(db_session: Session):
     once seed data has been successfully added.
     """
 
-    initial_data = [
-        {"account_id": "77bf4d6a-e7a5-40a5-b131-0b906c2e4d9e", "balance": 1000.0},
-        {"account_id": "d33e99a3-27aa-4891-a93d-220204013a55", "balance": 2500.0},
-        {"account_id": "a1ca32d6-f939-47bf-8644-09b6949ba750", "balance": 500.0},
-        {"account_id": "00faaa0e-c2fd-429f-b8b6-eac3d0a9d414", "balance": 0.0},
-    ]
-
-    for data in initial_data:
-        account = AccountBalance(**data)
-        db_session.add(account)
-
-    db_session.commit()
-    print("Seed data added to the database.")
+    try:
+        if db_session.query(AccountBalance).count() == 0:
+            initial_data = [
+                {
+                    "account_id": "77bf4d6a-e7a5-40a5-b131-0b906c2e4d9e",
+                    "balance": 1000.0,
+                },
+                {
+                    "account_id": "d33e99a3-27aa-4891-a93d-220204013a55",
+                    "balance": 2500.0,
+                },
+                {
+                    "account_id": "a1ca32d6-f939-47bf-8644-09b6949ba750",
+                    "balance": 500.0,
+                },
+                {"account_id": "00faaa0e-c2fd-429f-b8b6-eac3d0a9d414", "balance": 0.0},
+            ]
+            db_session.add_all(initial_data)
+            db_session.commit()
+            print("Seed data added to the database.")
+        else:
+            print("Seed data already exists in the database.")
+    except Exception as e:
+        print(f"Error adding seed data: {e}")
+        db_session.rollback()
+    finally:
+        db_session.close()
 
 
 if __name__ == "__main__":
