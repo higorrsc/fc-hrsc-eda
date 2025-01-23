@@ -2,7 +2,7 @@ import json
 import threading
 
 from app.models import AccountBalance
-from confluent_kafka import Consumer, KafkaException
+from confluent_kafka import Consumer
 from sqlalchemy.orm import Session
 
 
@@ -19,8 +19,8 @@ class KafkaConsumerService:
         self.running = True
         self.consumer = Consumer(
             {
-                "bootstrap.servers": "kafka:9092",
-                "group.id": "python-microservice",
+                "bootstrap.servers": "kafka:29092",
+                "group.id": "wallet",
                 "auto.offset.reset": "earliest",
             }
         )
@@ -51,8 +51,7 @@ class KafkaConsumerService:
             if msg is None:
                 continue
             if msg.error():
-                if msg.error().code() != KafkaException._PARTITION_EOF:
-                    print(f"Kafka error: {msg.error()}")
+                print(f"Kafka error: {msg.error()}")
                 continue
 
             # Processar a mensagem recebida
