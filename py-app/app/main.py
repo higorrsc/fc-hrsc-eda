@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from app.database import SessionLocal, get_db, init_db
 from app.kafka_consumer import KafkaConsumerService
 from app.models import AccountBalance
@@ -9,7 +11,7 @@ app = FastAPI()
 
 
 @app.get("/balances/{account_id}")
-def get_balance(account_id: str, db: Session = Depends(get_db)):
+async def get_balance(account_id: UUID, db: Session = Depends(get_db)):
     """
     Get the balance of an account.
 
