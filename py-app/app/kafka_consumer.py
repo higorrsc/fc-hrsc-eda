@@ -7,6 +7,19 @@ from sqlalchemy.orm import Session
 
 
 class KafkaConsumerService:
+    """
+    KafkaConsumerService is responsible for consuming messages from a Kafka topic.
+
+    This service initializes a Kafka consumer and manages the consumption of
+    messages in a separate thread. It processes each message by updating the
+    account balance in the database.
+
+    Attributes:
+        db_session: A function to obtain a database session.
+        running: A boolean flag indicating if the service is running.
+        consumer: An instance of the Kafka Consumer.
+    """
+
     def __init__(self, db_session):
         """
         Initialize a KafkaConsumerService.
@@ -70,19 +83,29 @@ class KafkaConsumerService:
         The account balance will be updated in the database based on the
         received message.
         """
-        data = json.loads(message)
-        account_id = data["account_id"]
-        amount = data["amount"]
+        try:
+            data = json.loads(message)
+            account_id = data["account_id"]
+            amount = data["amount"]
 
-        # Atualizar o saldo da conta no banco de dados
-        db: Session = next(self.db_session())
-        account = db.query(AccountBalance).filter_by(account_id=account_id).first()
-        if not account:
-            account = AccountBalance(account_id=account_id, balance=0.0)
-            db.add(account)
-        account.balance += amount
-        db.commit()
+            db: Session = next(self.db_session())
+            account = db.query(AccountBalance).filter_by(account_id=account_id).first()
+            if not account:
+                account = AccountBalance(account_id=account_id, balance=0.0)
+                db.add(account)
+            account.balance += amount
+            db.commit()
+        except json.JSONDecodeError:
+            print("Erro ao decodificar JSON")
+        except Exception as e:
+            print(f"Erro ao processar mensagem: {e}")
 
     def stop(self):
+        """
+        Stop the Kafka consumer service.
+
+        This method stops the Kafka consumer service and closes the
+        connection to the Kafka broker.
+        """
         self.running = False
         self.consumer.close()
