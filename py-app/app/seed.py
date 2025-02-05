@@ -1,4 +1,5 @@
 from app.database import SessionLocal, init_db
+from app.kafka_producer import send_transaction
 from app.models import AccountBalance
 from sqlalchemy.orm import Session
 
@@ -15,43 +16,55 @@ def create_seed_data(db_session: Session):
     added to the database and committed. Prints a confirmation message
     once seed data has been successfully added.
     """
-
+    initial_data = [
+        {
+            "account_id": "77bf4d6a-e7a5-40a5-b131-0b906c2e4d9e",
+            "balance": 1000.0,
+        },
+        {
+            "account_id": "d33e99a3-27aa-4891-a93d-220204013a55",
+            "balance": 2500.0,
+        },
+        {
+            "account_id": "a1ca32d6-f939-47bf-8644-09b6949ba750",
+            "balance": 500.0,
+        },
+        {
+            "account_id": "00faaa0e-c2fd-429f-b8b6-eac3d0a9d414",
+            "balance": 0.0,
+        },
+    ]
     try:
-        if db_session.query(AccountBalance).count() == 0:
-            initial_data = [
-                {
-                    "account_id": "77bf4d6a-e7a5-40a5-b131-0b906c2e4d9e",
-                    "balance": 1000.0,
-                },
-                {
-                    "account_id": "d33e99a3-27aa-4891-a93d-220204013a55",
-                    "balance": 2500.0,
-                },
-                {
-                    "account_id": "a1ca32d6-f939-47bf-8644-09b6949ba750",
-                    "balance": 500.0,
-                },
-                {"account_id": "00faaa0e-c2fd-429f-b8b6-eac3d0a9d414", "balance": 0.0},
-            ]
-            db_session.add_all(initial_data)
+        existing_accounts = {
+            account.account_id: account.balance
+            for account in db_session.query(AccountBalance).all()
+        }
+
+        new_accounts = []
+
+        for data in initial_data:
+            account_id = data["account_id"]
+            balance = data["balance"]
+
+            if account_id not in existing_accounts:
+                new_accounts.append(AccountBalance(**data))
+
+            send_transaction(account_id, balance)
+
+        if new_accounts:
+            db_session.add_all(new_accounts)
             db_session.commit()
-            print("Seed data added to the database.")
+            print("✅ Seed data added successfully.")
         else:
-            print("Seed data already exists in the database.")
+            print("✔️ Seed data already exists.")
     except Exception as e:
-        print(f"Error adding seed data: {e}")
+        print(f"❌ Error adding seed data: {e}")
         db_session.rollback()
     finally:
         db_session.close()
 
 
 if __name__ == "__main__":
-    # Inicializar banco e criar tabelas
     init_db()
-
-    # Criar seed data
     db = SessionLocal()
-    try:
-        create_seed_data(db)
-    finally:
-        db.close()
+    create_seed_data(db)
