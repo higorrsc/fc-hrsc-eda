@@ -92,9 +92,13 @@ services:
     ports:
       - "3003:3003"
     depends_on:
-      - kafka
-      - mysql
-      - mysql-balance
-      - goapp
+      kafka:
+        condition: service_started
+      mysql:
+        condition: service_started
+      mysql-balance:
+        condition: service_started
+      goapp:
+        condition: service_started
     environment:
       PYTHONUNBUFFERED: 1
