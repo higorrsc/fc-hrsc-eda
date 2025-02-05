@@ -2,6 +2,7 @@ from uuid import UUID
 
 from app.database import SessionLocal, get_db, init_db
 from app.kafka_consumer import KafkaConsumerService
+from app.kafka_setup import create_kafka_topic, wait_for_kafka
 from app.models import AccountBalance
 from app.seed import create_seed_data
 from fastapi import Depends, FastAPI, HTTPException
@@ -25,6 +26,7 @@ async def get_balance(account_id: UUID, db: Session = Depends(get_db)):
     Raises:
         HTTPException: If the account is not found.
     """
+    print(f"Getting balance for account {account_id}")
     account = db.query(AccountBalance).filter_by(account_id=account_id).first()
     if not account:
         raise HTTPException(status_code=404, detail="Account not found")
@@ -51,6 +53,9 @@ async def startup_event():
         create_seed_data(db)
     finally:
         db.close()
+
+    wait_for_kafka()
+    create_kafka_topic()
 
     kafka_service = KafkaConsumerService(get_db)
     kafka_service.start()
