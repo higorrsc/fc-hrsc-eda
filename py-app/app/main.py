@@ -27,7 +27,7 @@ async def get_balance(account_id: UUID, db: Session = Depends(get_db)):
         HTTPException: If the account is not found.
     """
     print(f"Getting balance for account {account_id}")
-    account = db.query(AccountBalance).filter_by(account_id=account_id).first()
+    account = db.query(AccountBalance).filter_by(account_id=str(account_id)).first()
     if not account:
         raise HTTPException(status_code=404, detail="Account not found")
     return {"account_id": account_id, "balance": account.balance}
