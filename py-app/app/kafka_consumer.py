@@ -67,7 +67,6 @@ class KafkaConsumerService:
                 print(f"Kafka error: {msg.error()}")
                 continue
 
-            # Processar a mensagem recebida
             self._process_message(msg.value().decode("utf-8"))
 
     def _process_message(self, message):
@@ -93,8 +92,8 @@ class KafkaConsumerService:
             if not account:
                 account = AccountBalance(account_id=account_id, balance=0.0)
                 db.add(account)
-            account.balance += amount
-            db.commit()
+                account.balance += amount
+                db.commit()
         except json.JSONDecodeError:
             print("Erro ao decodificar JSON")
         except Exception as e:
