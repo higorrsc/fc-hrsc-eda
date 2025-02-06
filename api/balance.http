@@ -4,17 +4,17 @@
 @account_04 = 00faaa0e-c2fd-429f-b8b6-eac3d0a9d414
 
 ###
-GET http://localhost:3003/balance/{{account_01}} HTTP/1.1
+GET http://localhost:3003/balances/{{account_01}} HTTP/1.1
 Accept: application/json
 
 ###
-GET http://localhost:3003/balance/{{account_02}} HTTP/1.1
+GET http://localhost:3003/balances/{{account_02}} HTTP/1.1
 Accept: application/json
 
 ###
-GET http://localhost:3003/balance/{{account_03}} HTTP/1.1
+GET http://localhost:3003/balances/{{account_03}} HTTP/1.1
 Accept: application/json
 
 ###
-GET http://localhost:3003/balance/{{account_04}} HTTP/1.1
+GET http://localhost:3003/balances/{{account_04}} HTTP/1.1
 Accept: application/json
