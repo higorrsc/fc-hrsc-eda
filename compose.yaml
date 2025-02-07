@@ -1,9 +1,9 @@
 services:
   goapp:
-    build: .
+    build: ./go-app
     container_name: app
     volumes:
-      - .:/app
+      - ./go-app:/app
     ports:
       - 8080:8080
 
@@ -69,3 +69,36 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
+
+  mysql-balance:
+    image: mysql:5.7
+    container_name: database-balance
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wallet
+      MYSQL_PASSWORD: root
+    ports:
+      - 3307:3306
+    volumes:
+      - .docker/balance:/var/lib/mysql
+
+  pyapp:
+    build: ./py-app
+    container_name: pyapp
+    volumes:
+      - ./py-app:/app
+      - ./py-app/requirements.txt:/app/requirements.txt
+    ports:
+      - "3003:3003"
+    depends_on:
+      kafka:
+        condition: service_started
+      mysql:
+        condition: service_started
+      mysql-balance:
+        condition: service_started
+      goapp:
+        condition: service_started
+    environment:
+      PYTHONUNBUFFERED: 1

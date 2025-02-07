@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "autoflush",
     "ckafka",
     "confluentinc",
     "enduml",
@@ -7,6 +8,7 @@
     "higorrsc",
     "hrsc",
     "mysql",
+    "sessionmaker",
     "sqlite",
     "startuml",
     "stretchr",
@@ -24,5 +26,12 @@
   "editor.formatOnPaste": true,
   "editor.rulers": [80, 120],
   "go.inlayHints.functionTypeParameters": true,
-  "go.inlayHints.parameterNames": true
+  "go.inlayHints.parameterNames": true,
+  "python.analysis.inlayHints.callArgumentNames": "all",
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "gitlens.codeLens.symbolScopes": ["!Module"],
+    "editor.formatOnType": true,
+    "editor.wordBasedSuggestions": "off"
+  }
 }
